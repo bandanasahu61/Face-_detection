@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FaceAI — Advanced Face Detection</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+  <!-- Animated background particles -->
+  <div class="bg-grid"></div>
+
+  <div class="app-wrapper">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">
+        <i class="fa-solid fa-eye"></i>
+        <span>Face<span class="accent">AI</span></span>
+      </div>
+      <div class="header-badges">
+        <span class="badge"><i class="fa-solid fa-circle-dot pulse-dot"></i> Live</span>
+        <span class="badge"><i class="fa-solid fa-microchip"></i> OpenCV</span>
+      </div>
+    </header>
+
+    <!-- Main content -->
+    <main class="main-grid">
+
+      <!-- Camera Panel -->
+      <section class="panel camera-panel">
+        <div class="panel-header">
+          <i class="fa-solid fa-video"></i> Camera Feed
+          <span id="fps-badge" class="fps-badge">-- FPS</span>
+        </div>
+        <div class="video-container">
+          <video id="video" autoplay playsinline muted></video>
+          <canvas id="overlay" class="overlay-canvas"></canvas>
+          <div class="scan-line"></div>
+          <div id="no-cam" class="no-cam-msg">
+            <i class="fa-solid fa-camera-slash"></i>
+            <p>Camera not started</p>
+          </div>
+        </div>
+        <div class="camera-controls">
+          <button id="startBtn" class="btn btn-primary" onclick="startCamera()">
+            <i class="fa-solid fa-play"></i> Start Camera
+          </button>
+          <button id="stopBtn" class="btn btn-danger" onclick="stopCamera()" disabled>
+            <i class="fa-solid fa-stop"></i> Stop
+          </button>
+          <button id="snapBtn" class="btn btn-secondary" onclick="takeSnapshot()" disabled>
+            <i class="fa-solid fa-camera"></i> Snapshot
+          </button>
+        </div>
+      </section>
+
+      <!-- Result Panel -->
+      <section class="panel result-panel">
+        <div class="panel-header">
+          <i class="fa-solid fa-chart-bar"></i> Detection Results
+        </div>
+
+        <!-- Stats cards -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+            <div class="stat-info">
+              <span id="face-count" class="stat-value">0</span>
+              <span class="stat-label">Faces</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-eye"></i></div>
+            <div class="stat-info">
+              <span id="eye-count" class="stat-value">0</span>
+              <span class="stat-label">Eyes</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-face-smile"></i></div>
+            <div class="stat-info">
+              <span id="smile-count" class="stat-value">0</span>
+              <span class="stat-label">Smiling</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-bolt"></i></div>
+            <div class="stat-info">
+              <span id="ms-count" class="stat-value">0</span>
+              <span class="stat-label">ms</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Processed frame -->
+        <div class="panel-header" style="margin-top:16px">
+          <i class="fa-solid fa-image"></i> Processed Frame
+        </div>
+        <div class="processed-frame-wrap">
+          <img id="processedImg" src="" alt="Processed" class="processed-img hidden"/>
+          <div id="processed-placeholder" class="processed-placeholder">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <p>Awaiting detection...</p>
+          </div>
+        </div>
+
+        <!-- Face list -->
+        <div class="panel-header" style="margin-top:16px">
+          <i class="fa-solid fa-list"></i> Face Details
+        </div>
+        <div id="face-list" class="face-list">
+          <p class="empty-msg">No faces detected yet.</p>
+        </div>
+
+        <!-- Snapshot gallery -->
+        <div class="panel-header" style="margin-top:16px">
+          <i class="fa-solid fa-images"></i> Snapshots
+        </div>
+        <div id="gallery" class="gallery"></div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Hidden canvas for capture -->
+  <canvas id="captureCanvas" style="display:none"></canvas>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
